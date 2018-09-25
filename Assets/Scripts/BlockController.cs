@@ -66,7 +66,7 @@ public class BlockController : MonoBehaviour
 
 		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / effectTime)
 		{
-			var newAlpha = Mathf.Lerp(alpha, effectTime, t);
+			var newAlpha = Mathf.Lerp(alpha, 0, t);
 			effectRenderer.color = new Color(1, 1, 1, newAlpha);
 			effectObject.transform.localScale = new Vector3(1.0f + t, 1.0f + t);
 			yield return null;
