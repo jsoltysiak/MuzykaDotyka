@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
 	private int _level = 5;
 
@@ -12,14 +12,25 @@ public class GameController : MonoBehaviour
 	private void Awake()
 	{
 		boardScript = GetComponent<BoardManager>();
-		boardScript.CreateBoard();
+		InitGameBoard();
 
-		var numberOfBlocksToChoose = _level + 2;
+		InitLevel(_level);
+	}
+
+	private void InitLevel(int level)
+	{
+		var numberOfBlocksToChoose = level + 2;
 		var startX = 2;
 		var startY = 0;
 
 		var blockSequence = boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
+		
 		StartCoroutine(boardScript.CreateTriggers(blockSequence));
+	}
+
+	private void InitGameBoard()
+	{
+		boardScript.CreateBoard();
 	}
 }
 

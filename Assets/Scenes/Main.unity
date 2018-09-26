@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 1402579263}
   - component: {fileID: 1402579265}
   m_Layer: 0
-  m_Name: GameController
+  m_Name: GameManager
   m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,14 +218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0283a38ba0f4a6f4e90f5cdb24c1c467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlockPrefab: {fileID: 1907600455770398, guid: 8815a493068988141a1fe6e20085133e,
-    type: 2}
-  TriggerPlay: {fileID: 1225546465336598, guid: 7b5eca000866ade4891c1f435bf5786d,
-    type: 2}
-  TriggerStart: {fileID: 1473185339859638, guid: 0b83bde974b05444d83920d0e7b04ac4,
-    type: 2}
-  Rows: 5
-  Columns: 5
 --- !u!4 &1402579264
 Transform:
   m_ObjectHideFlags: 0
@@ -250,3 +242,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28410710406d0314cb5b2c6c3f25ab5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BlockPrefab: {fileID: 1907600455770398, guid: 8815a493068988141a1fe6e20085133e,
+    type: 2}
+  Rows: 5
+  Columns: 5
+  TriggerPlay: {fileID: 1225546465336598, guid: 7b5eca000866ade4891c1f435bf5786d,
+    type: 2}
+  TriggerStart: {fileID: 1473185339859638, guid: 0b83bde974b05444d83920d0e7b04ac4,
+    type: 2}
