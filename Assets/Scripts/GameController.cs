@@ -9,13 +9,16 @@ public class GameController : MonoBehaviour
 
 	private BoardManager boardScript;
 	
-	// Use this for initialization
 	private void Awake()
 	{
 		boardScript = GetComponent<BoardManager>();
 		boardScript.CreateBoard();
 
-		var blockSequence = boardScript.GetRandomBlockSequence(2, 0, 4);
+		var numberOfBlocksToChoose = _level + 2;
+		var startX = 2;
+		var startY = 0;
+
+		var blockSequence = boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
 		StartCoroutine(boardScript.CreateTriggers(blockSequence));
 	}
 }

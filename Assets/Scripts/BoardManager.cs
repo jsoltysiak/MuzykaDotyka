@@ -41,11 +41,11 @@ public class BoardManager : MonoBehaviour {
 		}
 	}
 	
-	public List<Block> GetRandomBlockSequence(int startX, int startY, int level)
+	public List<Block> GetRandomBlockSequence(int startX, int startY, int sequenceLength)
 	{
 		var blockSequence = new List<Block>();
 
-		var numberOfBlocksToChoose = level + 2;
+		var numberOfBlocksToChoose = sequenceLength;
 		var block = _blockList[startX, startY];
 		blockSequence.Add(block);
 
