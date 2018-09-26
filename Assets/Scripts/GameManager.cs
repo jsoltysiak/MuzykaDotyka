@@ -1,16 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	public static GameManager Instance;
+	
 	private int _level = 5;
 
 	private BoardManager boardScript;
 	
 	private void Awake()
 	{
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else if (Instance != this)
+		{
+			Destroy(gameObject);
+		}
+		
+		DontDestroyOnLoad(gameObject);
+		
 		boardScript = GetComponent<BoardManager>();
 		InitGameBoard();
 
