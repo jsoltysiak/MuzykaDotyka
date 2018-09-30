@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52a14ddc579f30444a661cd36f9c258d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 1412222275922946, guid: 870a9a9571a707143afdbcf786fd502a,
+  GameManagerPrefab: {fileID: 1412222275922946, guid: 870a9a9571a707143afdbcf786fd502a,
     type: 2}
 --- !u!20 &519420031
 Camera:

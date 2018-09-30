@@ -1,18 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Loader : MonoBehaviour
 {
-
-	public GameObject gameManager;
+	public GameObject GameManagerPrefab;
 	
-	// Use this for initialization
-	void Awake () {
+	private void Awake () 
+	{
 		if (GameManager.Instance == null)
 		{
-			Instantiate(gameManager);
+			Instantiate(GameManagerPrefab);
 		}
 	}
 }

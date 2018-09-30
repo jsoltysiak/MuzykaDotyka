@@ -5,49 +5,35 @@ using UnityEngine;
 
 public class BlockController : MonoBehaviour
 {
-	public Sprite yellowSprite;
-	public Sprite greenSprite;
-	public Sprite blackSprite;
-	public Sprite redSprite;
-	
-	// Use this for initialization
-	private void Start() 
-	{
-	}
-	
-	// Update is called once per frame
-	private void Update()
-	{
-	}
+	public Sprite YellowSprite;
+	public Sprite GreenSprite;
+	public Sprite BlackSprite;
+	public Sprite RedSprite;
 
+	private const float InitialEffectAlpha = 0.5f;
+	
 	private void OnMouseDown()
 	{
 		GameManager.Instance.ChooseBlock(transform.position);
-		StartCoroutine(FlashBlock(0.5f));
 	}	
-
-	private void OnMouseUp()
-	{
-		//GetComponent<SpriteRenderer>().sprite = blackSprite;
-	}
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.CompareTag("Start"))
 		{
-			GetComponent<SpriteRenderer>().sprite = greenSprite;
+			GetComponent<SpriteRenderer>().sprite = GreenSprite;
 		}
 		else if (other.CompareTag("Play"))
 		{
-			GetComponent<SpriteRenderer>().sprite = yellowSprite;
+			GetComponent<SpriteRenderer>().sprite = YellowSprite;
 		}
 		else if (other.CompareTag("Error"))
 		{
-			GetComponent<SpriteRenderer>().sprite = redSprite;
+			GetComponent<SpriteRenderer>().sprite = RedSprite;
 		}
 		else if (other.CompareTag("Good"))
 		{
-			GetComponent<SpriteRenderer>().sprite = greenSprite;
+			GetComponent<SpriteRenderer>().sprite = GreenSprite;
 		}
 
 		StartCoroutine(FlashBlock(0.5f));
@@ -56,21 +42,20 @@ public class BlockController : MonoBehaviour
 	
 	private void OnTriggerExit2D(Collider2D other)
 	{
-		GetComponent<SpriteRenderer>().sprite = blackSprite;
+		GetComponent<SpriteRenderer>().sprite = BlackSprite;
 	}
 
 	private IEnumerator FlashBlock(float effectTime)
 	{
-		GameObject effectObject = new GameObject("effect");
+		var effectObject = new GameObject("effect");
 		effectObject.AddComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
 		effectObject.transform.position = transform.position;
 		var effectRenderer = effectObject.transform.GetComponent<SpriteRenderer>();
 		effectRenderer.sortingLayerName = "Effects";
-		var alpha = 0.5f;
 
-		for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / effectTime)
+		for (var t = 0.0f; t < 1.0f; t += Time.deltaTime / effectTime)
 		{
-			var newAlpha = Mathf.Lerp(alpha, 0, t);
+			var newAlpha = Mathf.Lerp(InitialEffectAlpha, 0, t);
 			effectRenderer.color = new Color(1, 1, 1, newAlpha);
 			effectObject.transform.localScale = new Vector3(1.0f + t, 1.0f + t);
 			yield return null;

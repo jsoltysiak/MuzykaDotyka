@@ -99,10 +99,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6695f4f5a29b4c48a3be2bff1934fc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yellowSprite: {fileID: 21300000, guid: 0a58e6bbddd9642468a8dcc939690856, type: 3}
-  greenSprite: {fileID: 21300000, guid: 31ffde4931acf104eb67695ca52f79ab, type: 3}
-  blackSprite: {fileID: 21300000, guid: b9cbfdc0d7b5861409f1086e5ae93c47, type: 3}
-  redSprite: {fileID: 21300000, guid: 5efd76e6deaaad445a9435129b77643c, type: 3}
+  YellowSprite: {fileID: 21300000, guid: 0a58e6bbddd9642468a8dcc939690856, type: 3}
+  GreenSprite: {fileID: 21300000, guid: 31ffde4931acf104eb67695ca52f79ab, type: 3}
+  BlackSprite: {fileID: 21300000, guid: b9cbfdc0d7b5861409f1086e5ae93c47, type: 3}
+  RedSprite: {fileID: 21300000, guid: 5efd76e6deaaad445a9435129b77643c, type: 3}
 --- !u!212 &212046761636102904
 SpriteRenderer:
   m_ObjectHideFlags: 1

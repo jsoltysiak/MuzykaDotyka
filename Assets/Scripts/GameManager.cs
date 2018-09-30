@@ -6,11 +6,13 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
-	
-	private int _level = 5;
 
-	private BoardManager boardScript;
+	private BoardManager _boardScript;
 	private List<Block> _blockSequence;
+
+	private int _level = 2;
+	private int _startX = 2;
+	private int _startY = 0;
 	
 	private void Awake()
 	{
@@ -25,10 +27,10 @@ public class GameManager : MonoBehaviour
 		
 		DontDestroyOnLoad(gameObject);
 		
-		boardScript = GetComponent<BoardManager>();
+		_boardScript = GetComponent<BoardManager>();
 		InitGameBoard();
 
-		StartCoroutine(InitLevel(_level));
+		StartCoroutine(InitLevel(_level, _startX, _startY));
 	}
 
 	public void ChooseBlock(Vector2 position)
@@ -39,29 +41,27 @@ public class GameManager : MonoBehaviour
 		var nextSequencePosition = nextBlock.Position;
 		if (position == nextSequencePosition)
 		{
-			boardScript.MarkCorrectBlock(position);
+			_boardScript.MarkCorrectBlock(position);
 			_blockSequence.Remove(nextBlock);
 		}
 		else
 		{
-			boardScript.MarkErrorBlock(position);
+			_boardScript.MarkErrorBlock(position);
 		}
 		
 	}
 
-	private IEnumerator InitLevel(int level)
+	private IEnumerator InitLevel(int level, int startX, int startY)
 	{
 		var numberOfBlocksToChoose = level + 2;
-		var startX = 2;
-		var startY = 0;
 
-		_blockSequence = boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
+		_blockSequence = _boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
 		
-		boardScript.MarkStartingBlock(_blockSequence.First().Position);
+		_boardScript.MarkStartingBlock(_blockSequence.First().Position);
 		yield return new WaitForSeconds(1f);
-		yield return StartCoroutine(boardScript.MarkPlayBlocks(_blockSequence, 0.5f));
+		yield return StartCoroutine(_boardScript.MarkPlayBlocks(_blockSequence, 0.5f));
 		yield return new WaitForSeconds(1f);
-		boardScript.UnmarkPlayBlocks();
+		_boardScript.UnmarkPlayBlocks();
 		
 		PopFirstBlockFromSequence();
 	}
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
 
 	private void InitGameBoard()
 	{
-		boardScript.CreateBoard();
+		_boardScript.CreateBoard();
 	}
 }
 
