@@ -74,7 +74,7 @@ public class BoardManager : MonoBehaviour {
 	{
 		for (var index = 1; index < blockSequence.Count; index++)
 		{
-			_playTriggers.Add(Instantiate(TriggerPlay, blockSequence[index].Position, Quaternion.identity));
+			_playTriggers.Add(CreateTrigger(TriggerPlay, blockSequence[index].Position));
 			yield return new WaitForSeconds(waitTime);
 		}
 	}
@@ -85,8 +85,13 @@ public class BoardManager : MonoBehaviour {
 		{
 			RemoveStartTrigger();
 		}
-		
-		_startTrigger = Instantiate(TriggerStart, position, Quaternion.identity);
+
+		_startTrigger = CreateTrigger(TriggerStart, position);
+	}
+
+	private GameObject CreateTrigger(GameObject triggerObject, Vector2 position)
+	{
+		 return Instantiate(triggerObject, new Vector3(position.x, position.y, 1), Quaternion.identity);
 	}
 
 	public void UnmarkPlayBlocks()
@@ -103,12 +108,12 @@ public class BoardManager : MonoBehaviour {
 	
 	public void MarkErrorBlock(Vector2 position)
 	{
-		Instantiate(TriggerError, position, Quaternion.identity);
+		CreateTrigger(TriggerError, new Vector3(position.x, position.y, -1f));
 	}
 	
 	public void MarkCorrectBlock(Vector2 position)
 	{
-		Instantiate(TriggerGood, position, Quaternion.identity);
+		CreateTrigger(TriggerGood, position);
 	}
 
 	private List<Block> GetNextBlocksFromPosition(int x, int y)
