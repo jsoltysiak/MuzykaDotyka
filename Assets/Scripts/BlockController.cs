@@ -45,6 +45,10 @@ public class BlockController : MonoBehaviour
 		{
 			GetComponent<SpriteRenderer>().sprite = redSprite;
 		}
+		else if (other.CompareTag("Good"))
+		{
+			GetComponent<SpriteRenderer>().sprite = greenSprite;
+		}
 
 		StartCoroutine(FlashBlock(0.5f));
 		

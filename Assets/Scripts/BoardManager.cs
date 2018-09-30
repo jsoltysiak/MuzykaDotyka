@@ -14,6 +14,8 @@ public class BoardManager : MonoBehaviour {
 	
 	public GameObject TriggerPlay;
 	public GameObject TriggerStart;
+	public GameObject TriggerError;
+	public GameObject TriggerGood;
 
 	private Block[,] _blockList;
 	
@@ -74,6 +76,16 @@ public class BoardManager : MonoBehaviour {
 			Instantiate(TriggerPlay, blockSequence[index].Position, Quaternion.identity);
 			yield return new WaitForSeconds(.5f);
 		}
+	}
+	
+	public void CreateErrorTrigger(Vector2 position)
+	{
+		Instantiate(TriggerError, position, Quaternion.identity);
+	}
+	
+	public void CreateGoodTrigger(Vector2 position)
+	{
+		Instantiate(TriggerGood, position, Quaternion.identity);
 	}
 
 	private List<Block> GetNextBlocksFromPosition(int x, int y)

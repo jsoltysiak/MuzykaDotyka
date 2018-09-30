@@ -71,3 +71,7 @@ MonoBehaviour:
     type: 2}
   TriggerStart: {fileID: 1473185339859638, guid: 0b83bde974b05444d83920d0e7b04ac4,
     type: 2}
+  TriggerError: {fileID: 1161262624799404, guid: dca7ec102bd47f34b9843ca73c0f791f,
+    type: 2}
+  TriggerGood: {fileID: 1694833653560770, guid: 1626245f057d1284ab7f37af9a32ff76,
+    type: 2}

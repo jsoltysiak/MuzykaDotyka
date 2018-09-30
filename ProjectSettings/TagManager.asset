@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Play
   - Start
+  - Error
+  - Good
   layers:
   - Default
   - TransparentFX
