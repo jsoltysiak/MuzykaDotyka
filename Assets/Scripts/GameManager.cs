@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,6 +9,7 @@ public class GameManager : MonoBehaviour
 	private int _level = 5;
 
 	private BoardManager boardScript;
+	private List<Block> _blockSequence;
 	
 	private void Awake()
 	{
@@ -27,15 +30,33 @@ public class GameManager : MonoBehaviour
 		InitLevel(_level);
 	}
 
+	public void ChooseBlock(Vector2 position)
+	{
+		var nextBlock = _blockSequence.FirstOrDefault();
+		if (nextBlock == null) return;
+
+		var nextSequencePosition = nextBlock.Position;
+		if (position == nextSequencePosition)
+		{
+			boardScript.CreateGoodTrigger(position);
+			_blockSequence.Remove(nextBlock);
+		}
+		else
+		{
+			boardScript.CreateErrorTrigger(position);
+		}
+		
+	}
+
 	private void InitLevel(int level)
 	{
 		var numberOfBlocksToChoose = level + 2;
 		var startX = 2;
 		var startY = 0;
 
-		var blockSequence = boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
+		_blockSequence = boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
 		
-		StartCoroutine(boardScript.CreateTriggers(blockSequence));
+		StartCoroutine(boardScript.CreateTriggers(_blockSequence));
 	}
 
 	private void InitGameBoard()

@@ -22,7 +22,7 @@ public class BlockController : MonoBehaviour
 
 	private void OnMouseDown()
 	{
-		GetComponent<SpriteRenderer>().sprite = redSprite;
+		GameManager.Instance.ChooseBlock(transform.position);
 		StartCoroutine(FlashBlock(0.5f));
 	}	
 
