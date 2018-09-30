@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4055936704809018}
   - component: {fileID: 114818111715327056}
   - component: {fileID: 61707944304680260}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TriggerError
   m_TagString: Error
   m_Icon: {fileID: 0}
