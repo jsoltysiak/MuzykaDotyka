@@ -48,19 +48,20 @@ public class BoardManager : MonoBehaviour {
 		var blockSequence = new List<Block>();
 
 		var numberOfBlocksToChoose = sequenceLength;
-		var block = _blockList[startX, startY];
-		blockSequence.Add(block);
+		var startBlock = _blockList[startX, startY];
+		blockSequence.Add(startBlock);
 
-		var previousBlock = block;
+		var currentBlock = startBlock;
+		var previousBlock = currentBlock;
 		for (var i = 0; i < numberOfBlocksToChoose; i++)
 		{
-			var possibleSteps = block.NextSteps.Where(b =>
-				b != previousBlock &&
-				(int) b.Position.x != startX && 
-				(int) b.Position.y != startY).ToList();
+			var possibleNextBlocks = currentBlock.NextSteps.Where(b =>
+				b != startBlock &&
+				b != previousBlock).ToList();
 
-			block = possibleSteps[Random.Range(0, possibleSteps.Count)];
-			blockSequence.Add(block);
+			previousBlock = currentBlock;
+			currentBlock = possibleNextBlocks[Random.Range(0, possibleNextBlocks.Count)];
+			blockSequence.Add(currentBlock);
 		}
 
 		return blockSequence;
