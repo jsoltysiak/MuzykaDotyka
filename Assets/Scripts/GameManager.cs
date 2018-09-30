@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
 		boardScript = GetComponent<BoardManager>();
 		InitGameBoard();
 
-		InitLevel(_level);
+		StartCoroutine(InitLevel(_level));
 	}
 
 	public void ChooseBlock(Vector2 position)
@@ -38,17 +39,17 @@ public class GameManager : MonoBehaviour
 		var nextSequencePosition = nextBlock.Position;
 		if (position == nextSequencePosition)
 		{
-			boardScript.CreateGoodTrigger(position);
+			boardScript.MarkCorrectBlock(position);
 			_blockSequence.Remove(nextBlock);
 		}
 		else
 		{
-			boardScript.CreateErrorTrigger(position);
+			boardScript.MarkErrorBlock(position);
 		}
 		
 	}
 
-	private void InitLevel(int level)
+	private IEnumerator InitLevel(int level)
 	{
 		var numberOfBlocksToChoose = level + 2;
 		var startX = 2;
@@ -56,7 +57,18 @@ public class GameManager : MonoBehaviour
 
 		_blockSequence = boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
 		
-		StartCoroutine(boardScript.CreateTriggers(_blockSequence));
+		boardScript.MarkStartingBlock(_blockSequence.First().Position);
+		yield return new WaitForSeconds(1f);
+		yield return StartCoroutine(boardScript.MarkPlayBlocks(_blockSequence, 0.5f));
+		yield return new WaitForSeconds(1f);
+		boardScript.UnmarkPlayBlocks();
+		
+		PopFirstBlockFromSequence();
+	}
+
+	private void PopFirstBlockFromSequence()
+	{
+		_blockSequence.RemoveAt(0);
 	}
 
 	private void InitGameBoard()

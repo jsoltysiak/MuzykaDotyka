@@ -18,6 +18,9 @@ public class BoardManager : MonoBehaviour {
 	public GameObject TriggerGood;
 
 	private Block[,] _blockList;
+
+	private readonly List<GameObject> _playTriggers = new List<GameObject>();
+	private GameObject _startTrigger = null;
 	
 	public void CreateBoard()
 	{
@@ -67,24 +70,43 @@ public class BoardManager : MonoBehaviour {
 		return blockSequence;
 	}
 	
-	public IEnumerator CreateTriggers(IList<Block> blockSequence)
+	public IEnumerator MarkPlayBlocks(IList<Block> blockSequence, float waitTime)
 	{
-		Instantiate(TriggerStart, blockSequence[0].Position, Quaternion.identity);
-		yield return new WaitForSeconds(1.0f);
-		
 		for (var index = 1; index < blockSequence.Count; index++)
 		{
-			Instantiate(TriggerPlay, blockSequence[index].Position, Quaternion.identity);
-			yield return new WaitForSeconds(.5f);
+			_playTriggers.Add(Instantiate(TriggerPlay, blockSequence[index].Position, Quaternion.identity));
+			yield return new WaitForSeconds(waitTime);
 		}
 	}
+
+	public void MarkStartingBlock(Vector2 position)
+	{
+		if(_startTrigger != null)
+		{
+			RemoveStartTrigger();
+		}
+		
+		_startTrigger = Instantiate(TriggerStart, position, Quaternion.identity);
+	}
+
+	public void UnmarkPlayBlocks()
+	{
+		_playTriggers.ForEach(Destroy);
+		_playTriggers.Clear();
+	}
 	
-	public void CreateErrorTrigger(Vector2 position)
+	private void RemoveStartTrigger()
+	{
+		Destroy(_startTrigger);
+		_startTrigger = null;
+	}
+	
+	public void MarkErrorBlock(Vector2 position)
 	{
 		Instantiate(TriggerError, position, Quaternion.identity);
 	}
 	
-	public void CreateGoodTrigger(Vector2 position)
+	public void MarkCorrectBlock(Vector2 position)
 	{
 		Instantiate(TriggerGood, position, Quaternion.identity);
 	}
