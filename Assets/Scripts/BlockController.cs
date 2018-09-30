@@ -74,3 +74,16 @@ public class BlockController : MonoBehaviour
 		DestroyImmediate(effectObject);
 	}
 }
+
+public class Block
+{
+	public List<Block> NextSteps { get; set; }
+	public GameObject BlockObject { get; private set; }
+	public Vector2 Position { get; private set; }
+
+	public Block(GameObject blockObject, Vector2 position)
+	{
+		BlockObject = blockObject;
+		Position = position;
+	}
+}

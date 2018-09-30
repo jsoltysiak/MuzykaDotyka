@@ -24,10 +24,10 @@ public class BoardManager : MonoBehaviour {
 		{
 			for (var y = 0; y < Rows; y++)
 			{
-				var block = new Block
-				{
-					BlockObject = Instantiate(BlockPrefab, new Vector3(x, y, 0), Quaternion.identity),
-				};
+				var block = new Block(
+					Instantiate(BlockPrefab, new Vector3(x, y, 0), Quaternion.identity),
+					new Vector2(x, y));
+				
 				_blockList[x, y] = block;
 			}
 		}
@@ -54,8 +54,8 @@ public class BoardManager : MonoBehaviour {
 		{
 			var possibleSteps = block.NextSteps.Where(b =>
 				b != previousBlock &&
-				(int) b.BlockObject.transform.position.x != startX && 
-				(int) b.BlockObject.transform.position.y != startY).ToList();
+				(int) b.Position.x != startX && 
+				(int) b.Position.y != startY).ToList();
 
 			block = possibleSteps[Random.Range(0, possibleSteps.Count)];
 			blockSequence.Add(block);
@@ -66,12 +66,12 @@ public class BoardManager : MonoBehaviour {
 	
 	public IEnumerator CreateTriggers(IList<Block> blockSequence)
 	{
-		Instantiate(TriggerStart, blockSequence[0].BlockObject.transform.position, Quaternion.identity);
+		Instantiate(TriggerStart, blockSequence[0].Position, Quaternion.identity);
 		yield return new WaitForSeconds(1.0f);
 		
 		for (var index = 1; index < blockSequence.Count; index++)
 		{
-			Instantiate(TriggerPlay, blockSequence[index].BlockObject.transform.position, Quaternion.identity);
+			Instantiate(TriggerPlay, blockSequence[index].Position, Quaternion.identity);
 			yield return new WaitForSeconds(.5f);
 		}
 	}
@@ -122,8 +122,3 @@ public class BoardManager : MonoBehaviour {
 	}
 }
 
-public class Block
-{
-	public List<Block> NextSteps;
-	public GameObject BlockObject;
-}
