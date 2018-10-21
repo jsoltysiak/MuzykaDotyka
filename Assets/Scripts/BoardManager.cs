@@ -75,6 +75,7 @@ public class BoardManager : MonoBehaviour {
 		for (var index = 1; index < blockSequence.Count; index++)
 		{
 			_playTriggers.Add(CreateTrigger(TriggerPlay, blockSequence[index].Position));
+			SoundManager.Instance.PlayNote(index - 1);
 			yield return new WaitForSeconds(waitTime);
 		}
 	}

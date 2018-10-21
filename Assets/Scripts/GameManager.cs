@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 	private int _startX = 2;
 	private int _startY = 0;
 	
+	private int _currentSequenceIndex = 0;
+	
 	private void Awake()
 	{
 		if (Instance == null)
@@ -42,18 +44,21 @@ public class GameManager : MonoBehaviour
 		if (position == nextSequencePosition)
 		{
 			_boardScript.MarkCorrectBlock(position);
+			SoundManager.Instance.PlayNote(_currentSequenceIndex++);
 			_blockSequence.Remove(nextBlock);
 		}
 		else
 		{
 			_boardScript.MarkErrorBlock(position);
 			_boardScript.ShakeAllBlocks();
+			SoundManager.Instance.PlayErrorSound();
 			CameraController.Instance.GetComponent<ShakeEffect>().ShakeMedium();
 		}
 	}
 
 	private IEnumerator InitLevel(int level, int startX, int startY)
 	{
+		_currentSequenceIndex = 0;
 		var numberOfBlocksToChoose = level + 2;
 
 		_blockSequence = _boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
