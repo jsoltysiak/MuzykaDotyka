@@ -47,8 +47,9 @@ public class GameManager : MonoBehaviour
 		else
 		{
 			_boardScript.MarkErrorBlock(position);
+			_boardScript.ShakeAllBlocks();
+			CameraController.Instance.GetComponent<ShakeEffect>().ShakeMedium();
 		}
-		
 	}
 
 	private IEnumerator InitLevel(int level, int startX, int startY)
