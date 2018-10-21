@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d19bc5507cbe55941b8e6429475ef764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShakeAmount: -0.12
+  ShakeAmount: 0.01
 --- !u!114 &114772461831018426
 MonoBehaviour:
   m_ObjectHideFlags: 1
