@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BlockController : MonoBehaviour
 {
@@ -9,9 +9,10 @@ public class BlockController : MonoBehaviour
 	public Sprite GreenSprite;
 	public Sprite BlackSprite;
 	public Sprite RedSprite;
+	public Sprite BlueSprite;
 
 	private const float InitialEffectAlpha = 0.5f;
-	
+
 	private void OnMouseDown()
 	{
 		GameManager.Instance.ChooseBlock(transform.position);
@@ -21,7 +22,7 @@ public class BlockController : MonoBehaviour
 	{
 		if (other.CompareTag("Start"))
 		{
-			GetComponent<SpriteRenderer>().sprite = GreenSprite;
+			GetComponent<SpriteRenderer>().sprite = BlueSprite;
 		}
 		else if (other.CompareTag("Play"))
 		{
@@ -36,7 +37,7 @@ public class BlockController : MonoBehaviour
 			GetComponent<SpriteRenderer>().sprite = GreenSprite;
 		}
 
-		StartCoroutine(FlashBlock(0.5f));
+		StartCoroutine(FlashBlock(0.8f));
 		
 	}
 	
@@ -51,16 +52,18 @@ public class BlockController : MonoBehaviour
 		effectObject.AddComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
 		effectObject.transform.position = transform.position;
 		var effectRenderer = effectObject.transform.GetComponent<SpriteRenderer>();
+		effectRenderer.sprite = YellowSprite;
 		effectRenderer.sortingLayerName = "Effects";
 
 		for (var t = 0.0f; t < 1.0f; t += Time.deltaTime / effectTime)
 		{
-			var newAlpha = Mathf.Lerp(InitialEffectAlpha, 0, t);
+			var newAlpha = Mathf.Lerp(InitialEffectAlpha, 0, t * 2);
 			effectRenderer.color = new Color(1, 1, 1, newAlpha);
 			effectObject.transform.localScale = new Vector3(1.0f + t, 1.0f + t);
 			yield return null;
 		}
 		DestroyImmediate(effectObject);
+		
 	}
 }
 

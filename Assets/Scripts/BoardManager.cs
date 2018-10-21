@@ -160,5 +160,13 @@ public class BoardManager : MonoBehaviour {
 		
 		return nextBlocks;
 	}
+
+	public void ShakeAllBlocks()
+	{
+		foreach (var block in _blockList)
+		{
+			block.BlockObject.GetComponent<ShakeEffect>().ShakeMedium();
+		}
+	}
 }
 
