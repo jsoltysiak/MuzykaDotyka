@@ -20,6 +20,8 @@ public class BoardManager : MonoBehaviour {
 	private Block[,] _blockList;
 
 	private readonly List<GameObject> _playTriggers = new List<GameObject>();
+	private readonly List<GameObject> _correctTriggers = new List<GameObject>();
+	private readonly List<GameObject> _errorTriggers = new List<GameObject>();
 	private GameObject _startTrigger = null;
 	
 	public void CreateBoard()
@@ -69,7 +71,23 @@ public class BoardManager : MonoBehaviour {
 
 		return blockSequence;
 	}
-	
+
+	public void ShakeAllBlocks()
+	{
+		foreach (var block in _blockList)
+		{
+			block.BlockObject.GetComponent<ShakeEffect>().ShakeMedium();
+		}
+	}
+
+	public void ResetBoard()
+	{
+		UnmarkPlayBlocks();
+		UnmarkCorrectBlocks();
+		UnmarkErrorBlocks();
+		RemoveStartTrigger();
+	}
+
 	public IEnumerator MarkPlayBlocks(IList<Block> blockSequence, float waitTime)
 	{
 		for (var index = 1; index < blockSequence.Count; index++)
@@ -78,6 +96,16 @@ public class BoardManager : MonoBehaviour {
 			SoundManager.Instance.PlayNote(index - 1);
 			yield return new WaitForSeconds(waitTime);
 		}
+	}
+
+	public void MarkCorrectBlock(Vector2 position)
+	{
+		_correctTriggers.Add(CreateTrigger(TriggerGood, position));
+	}
+
+	public void MarkErrorBlock(Vector2 position)
+	{
+		_errorTriggers.Add(CreateTrigger(TriggerError, new Vector3(position.x, position.y, -1f)));
 	}
 
 	public void MarkStartingBlock(Vector2 position)
@@ -90,31 +118,33 @@ public class BoardManager : MonoBehaviour {
 		_startTrigger = CreateTrigger(TriggerStart, position);
 	}
 
-	private GameObject CreateTrigger(GameObject triggerObject, Vector2 position)
-	{
-		 return Instantiate(triggerObject, new Vector3(position.x, position.y, 1), Quaternion.identity);
-	}
-
 	public void UnmarkPlayBlocks()
 	{
 		_playTriggers.ForEach(Destroy);
 		_playTriggers.Clear();
 	}
-	
+
+	public void UnmarkCorrectBlocks()
+	{
+		_correctTriggers.ForEach(Destroy);
+		_correctTriggers.Clear();
+	}
+
+	public void UnmarkErrorBlocks()
+	{
+		_errorTriggers.ForEach(Destroy);
+		_errorTriggers.Clear();
+	}
+
 	private void RemoveStartTrigger()
 	{
 		Destroy(_startTrigger);
 		_startTrigger = null;
 	}
-	
-	public void MarkErrorBlock(Vector2 position)
+
+	private GameObject CreateTrigger(GameObject triggerObject, Vector2 position)
 	{
-		CreateTrigger(TriggerError, new Vector3(position.x, position.y, -1f));
-	}
-	
-	public void MarkCorrectBlock(Vector2 position)
-	{
-		CreateTrigger(TriggerGood, position);
+		return Instantiate(triggerObject, new Vector3(position.x, position.y, 1), Quaternion.identity);
 	}
 
 	private List<Block> GetNextBlocksFromPosition(int x, int y)
@@ -160,14 +190,6 @@ public class BoardManager : MonoBehaviour {
 		}
 		
 		return nextBlocks;
-	}
-
-	public void ShakeAllBlocks()
-	{
-		foreach (var block in _blockList)
-		{
-			block.BlockObject.GetComponent<ShakeEffect>().ShakeMedium();
-		}
 	}
 }
 

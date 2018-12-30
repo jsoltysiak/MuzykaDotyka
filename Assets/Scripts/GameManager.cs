@@ -37,8 +37,12 @@ public class GameManager : MonoBehaviour
 
 	public void ChooseBlock(Vector2 position)
 	{
-		var nextBlock = _blockSequence.FirstOrDefault();
-		if (nextBlock == null) return;
+		if (_blockSequence.Count == 0)
+		{
+			return;
+		}
+		
+		var nextBlock = _blockSequence.First();
 
 		var nextSequencePosition = nextBlock.Position;
 		if (position == nextSequencePosition)
@@ -46,6 +50,12 @@ public class GameManager : MonoBehaviour
 			_boardScript.MarkCorrectBlock(position);
 			SoundManager.Instance.PlayNote(_currentSequenceIndex++);
 			_blockSequence.Remove(nextBlock);
+			if (_blockSequence.Count == 0)
+			{
+				// play victory sound
+				// show level summary popup
+				StartCoroutine(InitLevel(++_level, _startX, _startY));
+			}
 		}
 		else
 		{
@@ -61,6 +71,7 @@ public class GameManager : MonoBehaviour
 		_currentSequenceIndex = 0;
 		var numberOfBlocksToChoose = level + 2;
 
+		_boardScript.ResetBoard();
 		_blockSequence = _boardScript.GetRandomBlockSequence(startX, startY, numberOfBlocksToChoose);
 		
 		_boardScript.MarkStartingBlock(_blockSequence.First().Position);
