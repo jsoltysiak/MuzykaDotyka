@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
 
+	private GameObject _levelPanel;
+
 	private BoardManager _boardScript;
 	private List<Block> _blockSequence;
 
@@ -28,6 +30,9 @@ public class GameManager : MonoBehaviour
 		}
 		
 		DontDestroyOnLoad(gameObject);
+		
+		_levelPanel = GameObject.Find("LevelPanel");
+		_levelPanel.SetActive(false);
 		
 		_boardScript = GetComponent<BoardManager>();
 		InitGameBoard();
@@ -54,6 +59,9 @@ public class GameManager : MonoBehaviour
 			{
 				// play victory sound
 				// show level summary popup
+				_levelPanel.SetActive(true);
+				Time.timeScale = 0f;
+				
 				StartCoroutine(InitLevel(++_level, _startX, _startY));
 			}
 		}
@@ -66,7 +74,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private IEnumerator InitLevel(int level, int startX, int startY)
+	public IEnumerator InitLevel(int level, int startX, int startY)
 	{
 		_currentSequenceIndex = 0;
 		var numberOfBlocksToChoose = level + 2;
@@ -91,6 +99,12 @@ public class GameManager : MonoBehaviour
 	private void InitGameBoard()
 	{
 		_boardScript.CreateBoard();
+	}
+
+	public void StartButton()
+	{
+		Time.timeScale = 1f;
+		_levelPanel.SetActive(false);
 	}
 }
 
