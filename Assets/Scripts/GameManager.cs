@@ -8,9 +8,10 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance;
 
 	private GameObject _levelPanel;
+	private GameObject _mainMenu;
 
 	private BoardManager _boardScript;
-	private List<Block> _blockSequence;
+	private List<Block> _blockSequence = new List<Block>();
 
 	private int _level = 2;
 	private int _startX = 2;
@@ -37,11 +38,15 @@ public class GameManager : MonoBehaviour
 		_levelPanel = GameObject.Find("LevelPanel");
 		_levelPanel.SetActive(false);
 		
+		_mainMenu = GameObject.Find("MainMenuPanel");
+		_mainMenu.SetActive(false);
+		
 		
 		_boardScript = GetComponent<BoardManager>();
 		InitGameBoard();
-
-		StartCoroutine(InitLevel(_level, _startX, _startY));
+		
+		PauseGame();
+		ShowMainMenu();
 	}
 
 	public void ChooseBlock(Vector2 position)
@@ -96,8 +101,16 @@ public class GameManager : MonoBehaviour
 	private void ShowLevelMenu(bool show = true)
 	{
 		_levelPanel.SetActive(show);
-				
-		Time.timeScale = show ? 0f : 1f;
+	}
+
+	private void ShowMainMenu(bool show = true)
+	{
+		_mainMenu.SetActive(show);
+	}
+
+	private void PauseGame(bool pause = true)
+	{
+		Time.timeScale = pause ? 0f : 1f;
 	}
 
 	private IEnumerator Victory()
@@ -105,6 +118,7 @@ public class GameManager : MonoBehaviour
 		_userInputEnabled = false;
 		// TODO play victory sound
 		yield return new WaitForSeconds(1f);
+		PauseGame();
 		ShowLevelMenu();
 	}
 	
@@ -113,6 +127,7 @@ public class GameManager : MonoBehaviour
 		_userInputEnabled = false;
 		// TODO play victory sound
 		yield return new WaitForSeconds(1f);
+		PauseGame();
 		ShowLevelMenu();
 	}
 
@@ -128,18 +143,27 @@ public class GameManager : MonoBehaviour
 
 	public void StartButton()
 	{
-		Time.timeScale = 1f;
-		_levelPanel.SetActive(false);
+		ShowLevelMenu(false);
+		ShowMainMenu(false);
 		
+		PauseGame(false);	
 		StartCoroutine(InitLevel(_level, _startX, _startY));
 	}
 
 	public void NextButton()
 	{
-		Time.timeScale = 1f;
-		_levelPanel.SetActive(false);
+		ShowLevelMenu(false);
+		ShowMainMenu(false);
 		
+		PauseGame(false);
 		StartCoroutine(InitLevel(++_level, _startX, _startY));
+	}
+
+	public void BackButton()
+	{
+		PauseGame();
+		ShowLevelMenu(false);
+		ShowMainMenu();
 	}
 }
 

@@ -13,4 +13,9 @@ public class EventSystemController : MonoBehaviour
     {
         GameManager.Instance.NextButton();
     }
+    
+    public void ButtonBackEvent()
+    {
+        GameManager.Instance.BackButton();
+    }
 }
