@@ -8,4 +8,9 @@ public class EventSystemController : MonoBehaviour
     {
         GameManager.Instance.StartButton();
     }
+    
+    public void ButtonNextEvent()
+    {
+        GameManager.Instance.NextButton();
+    }
 }

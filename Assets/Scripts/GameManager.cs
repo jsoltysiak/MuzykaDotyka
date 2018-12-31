@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 	private int _startY = 0;
 	
 	private int _currentSequenceIndex = 0;
+
+	private bool _userInputEnabled;
 	
 	private void Awake()
 	{
@@ -31,8 +33,10 @@ public class GameManager : MonoBehaviour
 		
 		DontDestroyOnLoad(gameObject);
 		
+		_userInputEnabled = false;
 		_levelPanel = GameObject.Find("LevelPanel");
 		_levelPanel.SetActive(false);
+		
 		
 		_boardScript = GetComponent<BoardManager>();
 		InitGameBoard();
@@ -42,7 +46,7 @@ public class GameManager : MonoBehaviour
 
 	public void ChooseBlock(Vector2 position)
 	{
-		if (_blockSequence.Count == 0)
+		if (_blockSequence.Count == 0 || !_userInputEnabled)
 		{
 			return;
 		}
@@ -57,12 +61,7 @@ public class GameManager : MonoBehaviour
 			_blockSequence.Remove(nextBlock);
 			if (_blockSequence.Count == 0)
 			{
-				// play victory sound
-				// show level summary popup
-				_levelPanel.SetActive(true);
-				Time.timeScale = 0f;
-				
-				StartCoroutine(InitLevel(++_level, _startX, _startY));
+				StartCoroutine(Victory());
 			}
 		}
 		else
@@ -71,6 +70,8 @@ public class GameManager : MonoBehaviour
 			_boardScript.ShakeAllBlocks();
 			SoundManager.Instance.PlayErrorSound();
 			CameraController.Instance.GetComponent<ShakeEffect>().ShakeMedium();
+
+			StartCoroutine(Fail());
 		}
 	}
 
@@ -89,6 +90,30 @@ public class GameManager : MonoBehaviour
 		_boardScript.UnmarkPlayBlocks();
 		
 		PopFirstBlockFromSequence();
+		_userInputEnabled = true;
+	}
+
+	private void ShowLevelMenu(bool show = true)
+	{
+		_levelPanel.SetActive(show);
+				
+		Time.timeScale = show ? 0f : 1f;
+	}
+
+	private IEnumerator Victory()
+	{
+		_userInputEnabled = false;
+		// TODO play victory sound
+		yield return new WaitForSeconds(1f);
+		ShowLevelMenu();
+	}
+	
+	private IEnumerator Fail()
+	{
+		_userInputEnabled = false;
+		// TODO play victory sound
+		yield return new WaitForSeconds(1f);
+		ShowLevelMenu();
 	}
 
 	private void PopFirstBlockFromSequence()
@@ -105,6 +130,16 @@ public class GameManager : MonoBehaviour
 	{
 		Time.timeScale = 1f;
 		_levelPanel.SetActive(false);
+		
+		StartCoroutine(InitLevel(_level, _startX, _startY));
+	}
+
+	public void NextButton()
+	{
+		Time.timeScale = 1f;
+		_levelPanel.SetActive(false);
+		
+		StartCoroutine(InitLevel(++_level, _startX, _startY));
 	}
 }
 
