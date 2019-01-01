@@ -62,6 +62,8 @@ MonoBehaviour:
   Columns: 5
   TriggerPlay: {fileID: 1225546465336598, guid: 7b5eca000866ade4891c1f435bf5786d,
     type: 3}
+  TriggerPlayCurrent: {fileID: 6560605450924336264, guid: b920ee2b58e5c424fb0072865942e2a4,
+    type: 3}
   TriggerStart: {fileID: 1473185339859638, guid: 0b83bde974b05444d83920d0e7b04ac4,
     type: 3}
   TriggerError: {fileID: 1161262624799404, guid: dca7ec102bd47f34b9843ca73c0f791f,

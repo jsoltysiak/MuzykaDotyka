@@ -13,12 +13,14 @@ public class BoardManager : MonoBehaviour {
 	public int Columns = 5;
 	
 	public GameObject TriggerPlay;
+	public GameObject TriggerPlayCurrent;
 	public GameObject TriggerStart;
 	public GameObject TriggerError;
 	public GameObject TriggerGood;
 
 	private Block[,] _blockList;
 
+	private GameObject _currentTrigger;
 	private readonly List<GameObject> _playTriggers = new List<GameObject>();
 	private readonly List<GameObject> _correctTriggers = new List<GameObject>();
 	private readonly List<GameObject> _errorTriggers = new List<GameObject>();
@@ -92,8 +94,13 @@ public class BoardManager : MonoBehaviour {
 	{
 		for (var index = 1; index < blockSequence.Count; index++)
 		{
-			_playTriggers.Add(CreateTrigger(TriggerPlay, blockSequence[index].Position));
+			Destroy(_currentTrigger);
+			_currentTrigger = CreateTrigger(TriggerPlayCurrent, blockSequence[index].Position);
 			SoundManager.Instance.PlayNote(index - 1);
+			if (index > 1)
+			{
+				_playTriggers.Add(CreateTrigger(TriggerPlay, blockSequence[index - 1].Position));	
+			}
 			yield return new WaitForSeconds(waitTime);
 		}
 	}
@@ -120,6 +127,8 @@ public class BoardManager : MonoBehaviour {
 
 	public void UnmarkPlayBlocks()
 	{
+		Destroy(_currentTrigger);
+		_currentTrigger = null;
 		_playTriggers.ForEach(Destroy);
 		_playTriggers.Clear();
 	}

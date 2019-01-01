@@ -12,6 +12,8 @@ public class BlockController : MonoBehaviour
 	public Sprite BlueSprite;
 
 	private const float InitialEffectAlpha = 0.5f;
+	
+	private int _triggerCount = 0;
 
 	private void OnMouseDown()
 	{
@@ -20,11 +22,17 @@ public class BlockController : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
+		_triggerCount++;
 		if (other.CompareTag("Start"))
 		{
 			GetComponent<SpriteRenderer>().sprite = BlueSprite;
 		}
 		else if (other.CompareTag("Play"))
+		{
+			GetComponent<SpriteRenderer>().sprite = GreenSprite;
+			return;
+		}
+		else if (other.CompareTag("PlayCurrent"))
 		{
 			GetComponent<SpriteRenderer>().sprite = YellowSprite;
 		}
@@ -43,7 +51,11 @@ public class BlockController : MonoBehaviour
 	
 	private void OnTriggerExit2D(Collider2D other)
 	{
-		GetComponent<SpriteRenderer>().sprite = BlackSprite;
+		--_triggerCount;
+		if (_triggerCount < 1)
+		{
+			GetComponent<SpriteRenderer>().sprite = BlackSprite;
+		}
 	}
 
 	private IEnumerator FlashBlock(float effectTime)
